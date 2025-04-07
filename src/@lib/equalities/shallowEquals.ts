@@ -26,6 +26,7 @@ function isSameObject<T extends Record<string, unknown>>(objA: T, objB: T) {
   return result;
 }
 export function shallowEquals<T>(objA: T, objB: T): boolean {
+  if (objA === objB) return true;
   if (objA === null || objB === null) return isSameNull(objA, objB);
   if (objA === undefined || objB === undefined)
     return isSameUndefiend(objA, objB);
