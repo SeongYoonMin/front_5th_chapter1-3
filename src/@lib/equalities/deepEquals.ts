@@ -6,44 +6,27 @@ function isSameUndefiend(objA: unknown, objB: unknown) {
   return objA === objB;
 }
 
+// 0409 배운점.
+// Array.every()는 배열의 모든 요소가 주어진 판별 함수를 통과하는지 테스트합니다.
+// 이점을 이용해 배열 내 요소가 같은지 체크할수있음.
 function isSameArray<T>(arrA: T[], arrB: T[]) {
-  const arrayA = JSON.parse(JSON.stringify(arrA));
-  const arrayB = JSON.parse(JSON.stringify(arrB));
+  const arrayA = JSON.parse(JSON.stringify(arrA)) as T[];
+  const arrayB = JSON.parse(JSON.stringify(arrB)) as T[];
   if (arrayA.length !== arrayB.length) return false;
-  for (let i = 0; i < arrayA.length; i++) {
-    if (Array.isArray(arrayA[i]) && Array.isArray(arrayB[i])) {
-      return deepEquals(arrayA[i], arrayB[i]);
-    }
-    if (typeof arrayA[i] === "object" && typeof arrayB[i] === "object") {
-      return deepEquals(arrayA[i], arrayB[i]);
-    }
-    if (arrayA[i] !== arrayB[i]) return false;
-  }
-  return true;
+  return arrayA.every((item, index) => deepEquals(item, arrayB[index]));
 }
 
+// 객체 역시 0409에 배운 Array.every()를 이용해 비교할수 있다.
+// 어떻게 객체를 배열로 만들지 에 대한 고민.
 function isSameObject<T extends Record<string, unknown>>(objA: T, objB: T) {
-  const objectA = JSON.parse(JSON.stringify(objA));
-  const objectB = JSON.parse(JSON.stringify(objB));
-
-  const checkEquals = Object.entries(objectA).map(([key, value]) => {
-    if (typeof value === "object" || Array.isArray(value)) {
-      return deepEquals(objectA[key], objectB[key]);
-    }
-    if (objectA[key] !== objectB[key]) {
-      return false;
-    } else {
-      return true;
-    }
-  });
-  if (checkEquals.includes(false)) {
-    return false;
-  } else {
-    return true;
-  }
+  const objectA = Object.keys(JSON.parse(JSON.stringify(objA))) as (keyof T)[];
+  const objectB = Object.keys(JSON.parse(JSON.stringify(objB))) as (keyof T)[];
+  if (objectA.length !== objectB.length) return false;
+  return objectA.every((key) => deepEquals(objA[key], objB[key]));
 }
 
 export function deepEquals<T>(objA: T, objB: T): boolean {
+  console.log(objA, objB);
   if (objA === objB) return true;
   if (objA === undefined || objB === undefined) {
     return isSameUndefiend(objA, objB);
