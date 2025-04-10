@@ -12,8 +12,8 @@ import { NotificationSystem } from "./components/NotificationSystem";
 const App: React.FC = () => {
   return (
     <ThemeProvider>
-      <UserProvider>
-        <NotificationProvider>
+      <NotificationProvider>
+        <UserProvider>
           <Layout>
             <Header />
             <div className="container mx-auto px-4 py-8">
@@ -28,8 +28,8 @@ const App: React.FC = () => {
             </div>
             <NotificationSystem />
           </Layout>
-        </NotificationProvider>
-      </UserProvider>
+        </UserProvider>
+      </NotificationProvider>
     </ThemeProvider>
   );
 };
