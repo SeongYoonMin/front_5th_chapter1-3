@@ -26,7 +26,6 @@ function isSameObject<T extends Record<string, unknown>>(objA: T, objB: T) {
 }
 
 export function deepEquals<T>(objA: T, objB: T): boolean {
-  console.log(objA, objB);
   if (objA === objB) return true;
   if (objA === undefined || objB === undefined) {
     return isSameUndefiend(objA, objB);
